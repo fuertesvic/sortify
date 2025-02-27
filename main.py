@@ -99,6 +99,7 @@ def get_input_tag():
         input_window.destroy() 
 
     input_window = tk.Toplevel(root) # Open Window
+    input_window.geometry("200x100+500+300")
 
     user_input = tk.StringVar() # Sets tkinter varaible, allowing the execution to wait untill this variable is set.
     
@@ -193,18 +194,23 @@ def load_folder(folder_path,search=None):
     def select_all():
         file_list.selection_set(file_list.get_children())  # Select all rows
 
-    tk.Button(text="Selecciona tots", command=select_all).pack()
     # Option to add tags 
     addtag_button = tk.Button(text="Afegeix etiqueta", command=lambda:add_tag(file_list,folder_path))
-    addtag_button.pack(side='bottom')
+    addtag_button.pack()
     
+    tk.Button(text="Selecciona tots", command=select_all).pack(side='bottom')
+
     # Option to remove tags 
     removetag_button = tk.Button(text="Esborra etiquetes d'imatges seleccionades", command=lambda:remove_tag(file_list,folder_path))
     removetag_button.pack(side='left')
+
+    root.protocol("WM_DELETE_WINDOW", root.quit)
      
 if __name__ == "__main__":
     root = tk.Tk()                      # Sets the main GUI window, with a name and Size
     root.title("SortiFy")
     root.geometry("1400x800")
     print_initial_screen()              # Print welcome screen with user options as buttons
+    root.protocol("WM_DELETE_WINDOW", root.quit)
     root.mainloop()                     
+    
