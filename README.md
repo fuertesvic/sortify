@@ -1,10 +1,16 @@
 # sortify
-Desktop App used to sort and classify images -- based on tags stored in metadata  
+Desktop App used to sort, classify and manage images based on user-inputted tags
 
-Currently works with PNG images only.  
-User can define tags and add then to img metadata and then find images with a specific tag.  
+The user can define tags and add then to img metadata and then perform actions such as searching all images with a specific tag.
+ --- WORK IN PROGRESS --- 
+ 
+-[x] Code the most basic metadata input/read and logic functionality
+-[] Allow the user to remove a single tag within an image/
+-[] Allow to the user to work within multiple folders at once & creating new folders based on tags
+-[] Improve performance within a large dataset
+-[] Improve visuals
+-[] Add Image recogtnition to automatically add tags to images.
 
--- Work In Progress --  
 
 Steps to reproduce with example dataset (Pokemon images in https://www.kaggle.com/datasets/kvpratama/pokemon-images-dataset/data):  
 1) Install requirements (Kaggle, Pillow):  
