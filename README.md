@@ -15,7 +15,11 @@ The user can define tags and add then to img metadata and then perform actions s
 - [ ] Add Image recogtnition to automatically add tags to images.  
  
 
-Steps to reproduce with example dataset (Pokemon images in https://www.kaggle.com/datasets/kvpratama/pokemon-images-dataset/data):  
+
+
+-- Steps to reproduce with example dataset --  
+
+Pokemon images in https://www.kaggle.com/datasets/kvpratama/pokemon-images-dataset/data)  
 1) Install requirements (Kaggle, Pillow):  
 	pip install -r requirements.txt
 
