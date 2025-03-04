@@ -2,7 +2,10 @@
 Desktop App used to sort, classify and manage images based on user-inputted tags  
 
 The user can define tags and add then to img metadata and then perform actions such as searching all images with a specific tag.  
+
  --- WORK IN PROGRESS ---   
+
+ some tasks for the future me:   
  
 - [x] Code the most basic metadata input/read and logic functionality  
 - [ ] Allow the user to remove a single tag within an image  
