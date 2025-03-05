@@ -19,7 +19,7 @@ The user can define tags and add then to img metadata and then perform actions s
 
 
 
--- Steps to reproduce with example dataset --  
+# Steps to reproduce with example dataset  
 
 Pokemon images in [this Kaggle dataset](https://www.kaggle.com/datasets/kvpratama/pokemon-images-dataset/data)  
 1) Install requirements (Kaggle, Pillow):  
