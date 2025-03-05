@@ -1,5 +1,5 @@
-# SortiFy
-Desktop App used to sort, classify and manage images based on user-inputted tags  
+# sortify
+Desktop app used to sort and classify images -- based on tags stored in image metadata  
 
 The user can define tags and add then to img metadata and then perform actions such as searching all images with a specific tag.  
 
