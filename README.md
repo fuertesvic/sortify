@@ -7,7 +7,8 @@ The user can define tags and add then to img metadata and then perform actions s
 
  some tasks for the future me:   
  
-- [x] Code the most basic metadata input/read and logic functionality  
+- [x] Code the most basic metadata input/read and logic functionality  (done 27 feb '25)
+- [ ] Setup executables with PyInstaller so the user doesn't need to have Python installed.
 - [ ] Allow the user to remove a single tag within an image  
 - [ ] Allow to the user to work within multiple folders at once & creating new folders based on tags  
 - [ ] Improve performance within a large dataset  
@@ -19,7 +20,7 @@ The user can define tags and add then to img metadata and then perform actions s
 
 -- Steps to reproduce with example dataset --  
 
-Pokemon images in https://www.kaggle.com/datasets/kvpratama/pokemon-images-dataset/data)  
+Pokemon images in [this Kaggle dataset](https://www.kaggle.com/datasets/kvpratama/pokemon-images-dataset/data)  
 1) Install requirements (Kaggle, Pillow):  
 	pip install -r requirements.txt
 
