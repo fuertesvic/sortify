@@ -1,10 +1,11 @@
-# sortify
+# SortiFy
 Desktop App used to sort, classify and manage images based on user-inputted tags  
 
 The user can define tags and add then to img metadata and then perform actions such as searching all images with a specific tag.  
 
  --- WORK IN PROGRESS ---   
 
+# Development Log
  some tasks for the future me:   
  
 - [x] Code a basic metadata input/read, logic functionality and GUI implementation (done - 27 feb '25)
