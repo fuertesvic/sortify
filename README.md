@@ -8,12 +8,14 @@ The user can define tags and add then to img metadata and then perform actions s
 # Development Log
  some tasks for the future me:   
  
-- [x] Code a basic metadata input/read, logic functionality and GUI implementation (done - 27 feb '25)
+- [x] Code a basic metadata input/read, logic functionality and GUI implementation (done - 27th feb '25)
 - [x] Setup executables with PyInstaller so the user doesn't need to have Python installed.
-- [ ] Allow the user to remove a single tag within an image  
+- [x] Allow the user to remove a single tag within an image (done - 6th march)  
+- [ ] Implement searching for images with multiple matching tags
 - [ ] Allow to the user to work within multiple folders at once & creating new folders based on tags  
 - [ ] Improve performance within a large dataset  
-- [ ] Improve visual GUI -- Stop using TkInter and migrate to PyQt   
+- [ ] Improve visual GUI -- Stop using TkInter and migrate to PyQt
+- [ ] Add keybindings   
 - [ ] Add Image recogtnition to automatically add tags to images.  
  
 
