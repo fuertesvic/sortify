@@ -6,12 +6,12 @@ Desktop app used to manage, sort and classify locally stored images.
 It works with PNG images only currently, and it reads Metadata in PngInfo Plugin from Pillow
 It has a GUI which allows the user to:  
 
-	- Navigate a folder and view metadata tags  
-	- Select one/multiple file(s) in the folder and add a tag.  
-	- Select all files in the folder to perform a further action  
-	- Remove a specific tag from a single image  
-	- Remove all tags from the selected image(s)  
-	- Search in a specific folder for image(s) containing a specific tag.  
+	-- Navigate a folder and view metadata tags  
+	-- Select one/multiple file(s) in the folder and add a tag.  
+	-- Select all files in the folder to perform a further action  
+	-- Remove a specific tag from a single image  
+	-- Remove all tags from the selected image(s)  
+	-- Search in a specific folder for image(s) containing a specific tag.  
 
 
 The user can define tags and add then to img metadata and then perform actions such as searching all images with a specific tag.  
@@ -38,15 +38,18 @@ The user can define tags and add then to img metadata and then perform actions s
 
 Pokemon images in [this Kaggle dataset](https://www.kaggle.com/datasets/kvpratama/pokemon-images-dataset/data)  
 1) Install requirements (Kaggle, Pillow):  
+
 	pip install -r requirements.txt
 
 2) Download and unzip dataset:  
+
 	kaggle datasets download -d kvpratama/pokemon-images-dataset  
 	unzip pokemon-images-dataset.zip -d dataset/  
     rm pokemon-images-dataset.zip  
 	rm -r dataset/pokemon_jpg  
 	mv dataset/pokemon/pokemon/* dataset/pokemon   
 	rm -r dataset/pokemon/pokemon   
+
 
 3) Sample dataset-- Get the first 100 images and discard the rest.  
     ./sample_dataset.sh
