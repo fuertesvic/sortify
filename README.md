@@ -1,4 +1,6 @@
 # sortify
+ 
+ --- WORK IN PROGRESS --- 
 
 Desktop app used to manage, sort and classify locally stored images.
 It works with PNG images only currently, and it reads Metadata in PngInfo Plugin from Pillow
@@ -12,7 +14,7 @@ It has a GUI which allows the user to:
 
 The user can define tags and add then to img metadata and then perform actions such as searching all images with a specific tag.  
 
- --- WORK IN PROGRESS ---   
+  
 
 # Development Log
  some tasks for the future me:   
