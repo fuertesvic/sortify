@@ -2,8 +2,7 @@
  
  --- WORK IN PROGRESS --- 
 
-Desktop app used to manage, sort and classify locally stored images.  
-
+Desktop app used to manage, sort and classify locally stored images.
 It works with PNG images only currently, and it reads Metadata in [PngInfo](https://pillow.readthedocs.io/en/stable/_modules/PIL/PngImagePlugin.html) Plugin from Pillow
 
 It has a GUI which allows the user to:  
