@@ -21,14 +21,27 @@ def add_tag_to_image(path,tag,people=None):
 
     tags.append(tag)                                    # Appends the new tag to insert into the list
     metadata.add_text("Tags",",".join(tags))            # Encodes the metadata into the image
+
     if people: metadata.add_text("people",people) 
     img.save(path,"PNG",pnginfo=metadata)               
 
-def remove_tags_from_image(path):
+def remove_tags_from_image(path,tags_to_remove=None):
     """Creates an empty metadata object file to overwrite the existing one, thus removing the tags from an image."""
-    img = Image.open(path)
-    metadata = PngInfo()
-    img.save(path,'PNG',pnginfo=metadata)
+    print(f"Remove Tags from image called with params {path} and {tags_to_remove}")
+    if tags_to_remove:
+        current_tags = read_tag_from_image(path[0]).split(',')
+        [current_tags.remove(tag) for tag in tags_to_remove]
+        img = Image.open(path[0])
+        metadata = PngInfo()
+        metadata.add_text("Tags",",".join(current_tags))
+        img.save(path[0],"PNG",pnginfo=metadata)
+       
+
+    else:
+        img = Image.open(path)
+        metadata = PngInfo()
+        img.save(path,'PNG',pnginfo=metadata)
+
 
 def add_tag_to_multiple_images(paths,tags,people=None):
     """Adds a tag to the images selected and passed, and opens a message box informing the user of the changes made."""
@@ -78,7 +91,7 @@ def wipe_screen():
     # Destroy all widgets in the window
     for widget in root.winfo_children():
         widget.destroy()
-    
+
 def option1():
     wipe_screen()
     folder_path = ask_folder()
@@ -134,7 +147,40 @@ def add_tag(file_list,folder_path):
     add_tag_to_multiple_images(paths,user_input)
     load_folder(folder_path)
 
-def remove_tag(file_list,folder_path):
+def remove_tag_from_one_image(file_list,folder_path):
+    print("hi")
+    path = get_selected_files(file_list,folder_path)
+    if len(path) > 1:
+        error_window = tk.Toplevel(root)
+        tk.Message(error_window,text="Error: Ha de seleccionar una única imatge!").pack()
+        ok_btn = tk.Button(error_window,text="D'acord", command = lambda: load_folder(folder_path))
+        ok_btn.pack()
+        
+    else:
+        def show_selected():
+            selected_tags = [item for item, var in zip(items, check_vars) if var.get()]
+            remove_tags_from_image(path,selected_tags)
+            load_folder(folder_path)
+            
+        tags = read_tag_from_image(path[0])
+        new_window = tk.Toplevel(root)
+        tk.Label(new_window, text = "Seleccioni les etiquetes a eliminar").pack()
+        frame = tk.Frame(new_window)
+        frame.pack()
+
+        items = tags.split(',')
+        check_vars = []
+
+        for item in items:
+            var = tk.BooleanVar()
+            check_vars.append(var)
+            chk = tk.Checkbutton(frame, text = item, variable = var)
+            chk.pack()
+
+        ok_btn = tk.Button(new_window, text="Ok", command=show_selected)
+        ok_btn.pack(pady=5)
+
+def remove_tag_from_all(file_list,folder_path):
     """Removes all tags from the selected files. Then, returns to the folder Treeview visualization"""
 
     def no_option():
@@ -186,6 +232,7 @@ def load_folder(folder_path,search=None):
                 file_size = os.path.getsize(file_path)
                 mod_time = os.path.getmtime(file_path)                                  # Get last modification time
                 mod_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(mod_time)) # Format time
+                
                 labels = read_tag_from_image(file_path)    
         
                 file_list.insert("","end", values=(file, file_size, mod_time, labels))
@@ -198,13 +245,16 @@ def load_folder(folder_path,search=None):
     addtag_button = tk.Button(text="Afegeix etiqueta", command=lambda:add_tag(file_list,folder_path))
     addtag_button.pack()
     
-    tk.Button(text="Selecciona tots", command=select_all).pack(side='bottom')
+    tk.Button(text = "Selecciona tots", command = select_all).pack(side='bottom')
 
     # Option to remove tags 
-    removetag_button = tk.Button(text="Esborra etiquetes d'imatges seleccionades", command=lambda:remove_tag(file_list,folder_path))
-    removetag_button.pack(side='left')
+    removetag_button = tk.Button(text="Esborra totes les etiquetes d'imatges seleccionades", command=lambda:remove_tag_from_all(file_list,folder_path))
+    removetag_button.pack(side = 'left')
 
-    root.protocol("WM_DELETE_WINDOW", root.quit)
+    remove_single_tag_button = tk.Button(text="Esborra una o més etiquetes d'una sola imatge", command = lambda: remove_tag_from_one_image(file_list,folder_path))
+    remove_single_tag_button.pack(side = 'left')
+   
+    
      
 if __name__ == "__main__":
     root = tk.Tk()                      # Sets the main GUI window, with a name and Size
