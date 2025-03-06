@@ -5,6 +5,7 @@
 Desktop app used to manage, sort and classify locally stored images.
 It works with PNG images only currently, and it reads Metadata in PngInfo Plugin from Pillow
 It has a GUI which allows the user to:  
+
 	- Navigate a folder and view metadata tags  
 	- Select one/multiple file(s) in the folder and add a tag.  
 	- Select all files in the folder to perform a further action  
