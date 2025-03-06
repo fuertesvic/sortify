@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import filedialog,ttk,messagebox
 import time
 
+
 def read_tag_from_image(path):
     """Checks the metadata (specifically, the 'tags' of an image in *path* and returns it as a string"""
     img = Image.open(path)
@@ -27,7 +28,6 @@ def add_tag_to_image(path,tag,people=None):
 
 def remove_tags_from_image(path,tags_to_remove=None):
     """Creates an empty metadata object file to overwrite the existing one, thus removing the tags from an image."""
-    print(f"Remove Tags from image called with params {path} and {tags_to_remove}")
     if tags_to_remove:
         current_tags = read_tag_from_image(path[0]).split(',')
         [current_tags.remove(tag) for tag in tags_to_remove]
@@ -42,7 +42,6 @@ def remove_tags_from_image(path,tags_to_remove=None):
         metadata = PngInfo()
         img.save(path,'PNG',pnginfo=metadata)
 
-
 def add_tag_to_multiple_images(paths,tags,people=None):
     """Adds a tag to the images selected and passed, and opens a message box informing the user of the changes made."""
     filenames = []
@@ -53,14 +52,11 @@ def add_tag_to_multiple_images(paths,tags,people=None):
     messagebox.showinfo(' ',f"S'ha afegit l'etiqueta '{tags}' a {len(filenames)} fitxer(s):\n\n{','.join(filenames)}")
     
 def check_tags(metadata,tag):
-    print(f"Tag: {tag} in Metadata: {metadata} Split: {metadata.split()}")
-    print(tag in metadata.split())
     return tag in metadata.split(',')
 
 def match_files_with_tag(folder_path,files,tag):
     """Receives a list of files with their respectives paths, and check if their metadata matches with a given tag.
     Stores and returns the files that match."""
-    print("Match files with tag called!")
 
     paths = [f"{folder_path}/{file}" for file in files]
     matching = []
@@ -79,14 +75,16 @@ def print_initial_screen():
     wipe_screen()
     title = tk.Label(root, text = "Benvingut/da a sortiFy!", font=("Arial",20))
     subtitle = tk.Label(root, text = "Quina acció vol realitzar?", font =("Arial",16))
-    button1 = tk.Button(root, text="Navegar una carpeta: consultar / afegir / eliminar etiquetes", command=option1, font=("Arial",16))
-    button2 = tk.Button(root, text="Fer una cerca d'imatges que continguin una etiqueta concreta", command=option2, font=("Arial",16))
-
-    title.place(x=200,y=20)
-    subtitle.place(x=150,y=150)
-    button1.place(x=80,y=200)
-    button2.place(x=80,y=250)
+    button1 = tk.Button(root, text = "Navegar una carpeta: consultar / afegir / eliminar etiquetes", command=option1, font=("Arial",16))
+    button2 = tk.Button(root, text = "Fer una cerca d'imatges que continguin una etiqueta concreta", command=option2, font=("Arial",16))
+    exitbtn = tk.Button(root, text = "Surt del programa", command = root.quit)
     
+    title.place(x=200,y=20)
+    subtitle.place(x = 150, y = 150)
+    button1.place(x = 80, y = 200)
+    button2.place(x = 80, y = 250)
+    exitbtn.place(x = 80, y = 450)
+
 def wipe_screen():
     # Destroy all widgets in the window
     for widget in root.winfo_children():
@@ -100,9 +98,11 @@ def option1():
 def option2():
     wipe_screen()
     keyword = get_input_tag()
-    folder_path = ask_folder()
-    load_folder(folder_path,keyword)
-
+    if keyword ==  '0': print_initial_screen()
+    else:
+        folder_path = ask_folder()
+        load_folder(folder_path,keyword)
+    
 def get_input_tag():
     """Opens a window for the user to input a tag, waits for the user to sumbit the input and then returns it"""
 
@@ -110,6 +110,11 @@ def get_input_tag():
         """Stores the value that user has inputted and closes dialog window"""
         user_input.set(entry.get())  
         input_window.destroy() 
+    
+    def cancel():
+        user_input.set(0)
+        input_window.destroy()
+        return
 
     input_window = tk.Toplevel(root) # Open Window
     input_window.geometry("200x100+500+300")
@@ -121,8 +126,9 @@ def get_input_tag():
     entry.pack()
     
     tk.Button(input_window, text= 'OK', command=submit).pack() # Submit button
+    tk.Button(input_window, text= 'cancelar', command = cancel).pack() # Cancel button
 
-    root.wait_variable(user_input) # Wait untill there's an input
+    entry.wait_variable(user_input) # Wait untill there's an input
     
     return user_input.get()
 
@@ -144,11 +150,14 @@ def add_tag(file_list,folder_path):
     """Adds a tag to the selected files. Then, returns to the folder Treeview visualization"""
     paths = get_selected_files(file_list,folder_path)
     user_input = get_input_tag()
-    add_tag_to_multiple_images(paths,user_input)
+    
+    if user_input != '0' and user_input != '':  
+        add_tag_to_multiple_images(paths,user_input)
+
     load_folder(folder_path)
 
-def remove_tag_from_one_image(file_list,folder_path):
-    print("hi")
+def remove_tag_from_one_image(file_list,folder_path,keyword=None):
+    
     path = get_selected_files(file_list,folder_path)
     if len(path) > 1:
         error_window = tk.Toplevel(root)
@@ -160,7 +169,7 @@ def remove_tag_from_one_image(file_list,folder_path):
         def show_selected():
             selected_tags = [item for item, var in zip(items, check_vars) if var.get()]
             remove_tags_from_image(path,selected_tags)
-            load_folder(folder_path)
+            load_folder(folder_path,keyword)
             
         tags = read_tag_from_image(path[0])
         new_window = tk.Toplevel(root)
@@ -180,7 +189,7 @@ def remove_tag_from_one_image(file_list,folder_path):
         ok_btn = tk.Button(new_window, text="Ok", command=show_selected)
         ok_btn.pack(pady=5)
 
-def remove_tag_from_all(file_list,folder_path):
+def remove_tag_from_all(file_list,folder_path, keyword):
     """Removes all tags from the selected files. Then, returns to the folder Treeview visualization"""
 
     def no_option():
@@ -189,7 +198,7 @@ def remove_tag_from_all(file_list,folder_path):
     def yes_option():
         for path in paths:
             remove_tags_from_image(path)
-        load_folder(folder_path)
+        load_folder(folder_path,keyword)
 
     paths = get_selected_files(file_list,folder_path)
     confirmation_window = tk.Toplevel()
@@ -198,69 +207,72 @@ def remove_tag_from_all(file_list,folder_path):
     tk.Button(confirmation_window,text='Si',command=lambda:yes_option()).pack(side='right')
     
 def load_folder(folder_path,search=None):
-    wipe_screen()
-    columns = ("File","Size", "ModTime", "Labels")
-    file_list = ttk.Treeview(root,columns=columns,show="headings",selectmode="extended")    # Treeview object from TkInter to navigate the folder files
-    
-    # Back to main menu button
-    backbutton = tk.Button(text="Torna al Menú principal",command=print_initial_screen)
-    backbutton.pack(side='right')
-    
-    # GUI details for the TreeView
-    file_list.heading("File", text="Fitxer")
-    file_list.heading("Size", text="Mida (bytes)")
-    file_list.heading("ModTime", text="Data de darrera modificació")
-    file_list.heading("Labels", text="Etiquetes")
-    if search: tk.Label(root,text=f"Resultats de la cerca per a la etiqueta: {search}").pack()
-    file_list.column("File", width=200)
-    file_list.column("Size", width=100)
-    file_list.column("ModTime", width=150)
-    file_list.column("Labels", width=100)
-
-    file_list.pack(expand=True,fill="both")
-
-    files = os.listdir(folder_path)
-    if search: files = match_files_with_tag(folder_path,files,search)
-   
-    if files:
-        # Prints list of files
-        for file in files:
-            file_path = os.path.join(folder_path, file)
-
-            if os.path.isfile(file_path):
-
-                file_size = os.path.getsize(file_path)
-                mod_time = os.path.getmtime(file_path)                                  # Get last modification time
-                mod_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(mod_time)) # Format time
-                
-                labels = read_tag_from_image(file_path)    
+    if folder_path == (): print_initial_screen()
+    else:
+        wipe_screen()
+        columns = ("File","Size", "ModTime", "Labels")
+        file_list = ttk.Treeview(root,columns=columns,show="headings",selectmode="extended")    # Treeview object from TkInter to navigate the folder files
         
-                file_list.insert("","end", values=(file, file_size, mod_time, labels))
-    
-    # Option to select all
-    def select_all():
-        file_list.selection_set(file_list.get_children())  # Select all rows
+        # Back to main menu button
+        backbutton = tk.Button(text="Torna al Menú principal",command=print_initial_screen)
+        backbutton.pack(side='right')
+        
+        # GUI details for the TreeView
+        file_list.heading("File", text="Fitxer")
+        file_list.heading("Size", text="Mida (bytes)")
+        file_list.heading("ModTime", text="Data de darrera modificació")
+        file_list.heading("Labels", text="Etiquetes")
+        if search: tk.Label(root,text=f"Resultats de la cerca per a la etiqueta: {search}").pack()
+        file_list.column("File", width=200)
+        file_list.column("Size", width=25)
+        file_list.column("ModTime", width=150)
+        file_list.column("Labels", width=250)
 
-    # Option to add tags 
-    addtag_button = tk.Button(text="Afegeix etiqueta", command=lambda:add_tag(file_list,folder_path))
-    addtag_button.pack()
-    
-    tk.Button(text = "Selecciona tots", command = select_all).pack(side='bottom')
+        file_list.pack(expand=True,fill="both")
 
-    # Option to remove tags 
-    removetag_button = tk.Button(text="Esborra totes les etiquetes d'imatges seleccionades", command=lambda:remove_tag_from_all(file_list,folder_path))
-    removetag_button.pack(side = 'left')
-
-    remove_single_tag_button = tk.Button(text="Esborra una o més etiquetes d'una sola imatge", command = lambda: remove_tag_from_one_image(file_list,folder_path))
-    remove_single_tag_button.pack(side = 'left')
-   
+        files = os.listdir(folder_path)
+        if search: files = match_files_with_tag(folder_path,files,search)
     
-     
+        if files:
+            # Prints list of files
+            for file in files:
+                file_path = os.path.join(folder_path, file)
+
+                if os.path.isfile(file_path):
+
+                    file_size = os.path.getsize(file_path)
+                    mod_time = os.path.getmtime(file_path)                                  # Get last modification time
+                    mod_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(mod_time)) # Format time
+                    
+                    labels = read_tag_from_image(file_path)    
+            
+                    file_list.insert("","end", values=(file, file_size, mod_time, labels))
+        
+        # Option to select all
+        def select_all():
+            file_list.selection_set(file_list.get_children())  # Select all rows
+
+        # Option to add tags 
+        addtag_button = tk.Button(text="Afegeix etiqueta", command=lambda:add_tag(file_list,folder_path))
+        addtag_button.pack()
+        
+        tk.Button(text = "Selecciona tots", command = select_all).pack(side='bottom')
+
+        # Option to remove tags 
+        removetag_button = tk.Button(text="Esborra totes les etiquetes d'imatges seleccionades", command=lambda:remove_tag_from_all(file_list,folder_path,search))
+        removetag_button.pack(side = 'left')
+
+        remove_single_tag_button = tk.Button(text="Esborra una o més etiquetes d'una sola imatge", command = lambda: remove_tag_from_one_image(file_list,folder_path,search))
+        remove_single_tag_button.pack(side = 'left')
+
+        root.protocol("WM_DELETE_WINDOW", root.quit)
+
 if __name__ == "__main__":
     root = tk.Tk()                      # Sets the main GUI window, with a name and Size
     root.title("SortiFy")
     root.geometry("1400x800")
-    print_initial_screen()              # Print welcome screen with user options as buttons
     root.protocol("WM_DELETE_WINDOW", root.quit)
+    print_initial_screen()              # Print welcome screen with user options as buttons
+    
     root.mainloop()                     
     
