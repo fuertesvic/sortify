@@ -1,39 +1,48 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel,
-                            QWidget, QVBoxLayout, QHBoxLayout, QGridLayout)
+                            QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+                            QPushButton)
 from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtCore import Qt
 
 class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
     def __init__(self):
         super().__init__()
+        self.set_window_settings()
+        self.init_UI() 
+
+    def set_window_settings(self):
         self.setWindowTitle("SortiFy but using Qt!")
         self.setGeometry(0, 0, 800, 600)                  
-        self.setWindowIcon(QIcon("icon_for_window.jpg"))       # Set Window Icon
-        self.initUI() 
-        
-    def initUI(self):
+        self.setWindowIcon(QIcon("icon_for_window.jpg"))       
+    
+    def init_UI(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
-        label = QLabel(self, text="Benvingut/da a SortiFy!")
-        label.setFont(QFont("Helvetica",25))
-        label.setGeometry(0,0,800,100)
-        label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        # Title label
+        title_label = QLabel("Benvingut/da a SortiFy!\nQuina acció vol realitzar?", central_widget)
+        title_label.setFont(QFont("Verdana",15))
+    
+        # Option labels
+        button1 = QPushButton("Opció 1Opció 1Opció 1Opció 1",central_widget)
+        button2 = QPushButton("Opció 2Opció 1Opció 1Opció 1",central_widget)
+        button3 = QPushButton("Opció 3Opció 1",central_widget)
 
-        label1 = QLabel("First Label",self)
-        label2 = QLabel("Second Label",self)
-        label3 = QLabel("Third Label",self)
-        label4 = QLabel("Fourth Label",self)
+        # Layout -- Method of organizing widgets
         vbox = QVBoxLayout()
-        vbox.addWidget(label1)
-        vbox.addWidget(label2)
-        vbox.addWidget(label3)
-        vbox.addWidget(label4)
+        vbox.addWidget(title_label, alignment = Qt.AlignmentFlag.AlignHCenter)
+        vbox.addStretch()
+        vbox.addWidget(button1, alignment = Qt.AlignmentFlag.AlignHCenter )
+        vbox.addStretch()
+        vbox.addWidget(button2, alignment = Qt.AlignmentFlag.AlignHCenter )
+        vbox.addStretch()
+        vbox.addWidget(button3, alignment = Qt.AlignmentFlag.AlignRight)
+
+        
         central_widget.setLayout(vbox)
 
-
-
+   
 
 # Create app - Needed to set widgets on top
 app = QApplication([])
