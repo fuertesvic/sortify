@@ -7,7 +7,7 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         super().__init__()
         self.setWindowTitle("SortiFy but using Qt!")
         self.setGeometry(0, 0, 800, 600)                   # First 2 are to set the window placing on screen
-        self.setWindowIcon(QIcon("pic_for_sortify"))       # Set Window Icon
+        self.setWindowIcon(QIcon("icon_for_window"))       # Set Window Icon
         label = QLabel(self, text="Benvingut/da! Benvingut/da! Benvingut/da! Benvingut/da!")
         label.setFont(QFont("Helvetica",25))
         label.setGeometry(0,0,400,100)
