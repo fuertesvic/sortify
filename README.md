@@ -14,7 +14,6 @@ It has a GUI which allows the user to:
 ·Remove all tags from the selected image(s)  
 ·Search in a specific folder for image(s) containing a specific tag.  
 
-
 The user can define tags and add then to img metadata and then perform actions such as searching all images with a specific tag.  
 
   
@@ -24,10 +23,10 @@ The user can define tags and add then to img metadata and then perform actions s
  
 - [x] Code a basic metadata input/read, logic functionality and GUI implementation (done - 27th feb '25)
 - [x] Allow the user to remove a single tag within an image (done - 6th march)  
+- [ ] Improve visual GUI -- Stop using TkInter and migrate to PyQt
 - [ ] Implement searching for images with multiple matching tags
 - [ ] Allow to the user to work within multiple folders at once & creating new folders based on tags  
 - [ ] Improve performance within a large dataset  
-- [ ] Improve visual GUI -- Stop using TkInter and migrate to PyQt
 - [ ] Add keybindings   
 - [ ] Add Image recogtnition to automatically add tags to images.  
  
