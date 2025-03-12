@@ -1,4 +1,3 @@
-
 class Image():
     def __init__(self, name, format, size, mod_date):
         self.name = name
