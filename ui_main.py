@@ -1,4 +1,3 @@
-import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel,
                             QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
                             QPushButton, QFileDialog, QLineEdit)
@@ -16,7 +15,7 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         """Sets the main window geometry, title and icon"""
         self.setWindowTitle("SortiFy but using Qt!")
         self.setGeometry(0, 0, 800, 600)                  
-        self.setWindowIcon(QIcon("icon_for_window.jpg"))       
+        self.setWindowIcon(QIcon("assets/icon_for_window.jpg"))       
     
     def init_UI(self):
         """Prints the main menu screen with user options as buttons in a vertical layout (vbox)"""
@@ -84,32 +83,3 @@ class DialogWindow(QWidget):
     def submit(self):
         text = self.line_edit.text()
         print(f"Hello {text}")
-
-class Image():
-    def __init__(self, name, format, size, mod_date):
-        self.name = name
-        self.format = format
-        self.size = size
-        self.mod_date = mod_date
-    
-    def read_metadata(self):
-        pass
-
-    def add_metadata(self):
-        pass
-
-def main():
-
-# Create app - Needed to set widgets on top
-    app = QApplication([])
-
-    # Set the window
-    window = MainWindow()
-    window.show()
-
-    # Start and handle the event loop
-    sys.exit(app.exec())
-
-if __name__ == '__main__':
-    main()
-
