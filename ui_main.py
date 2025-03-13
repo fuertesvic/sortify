@@ -1,14 +1,18 @@
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel,
+import os
+from PyQt6.QtWidgets import (QMainWindow, QLabel,
                             QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-                            QPushButton, QFileDialog, QLineEdit)
+                            QPushButton, QFileDialog, QLineEdit,QTableView)
 from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtCore import Qt
+from image_tree_model import ImageTreeModel
+from dialog_window import DialogWindow
 
 class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
     def __init__(self):
         super().__init__()
         self.set_window_settings()
         self.init_UI() 
+        self.image_tree = ImageTreeModel()
         self.new_window = None
 
     def set_window_settings(self):
@@ -43,22 +47,27 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
 
         central_widget.setLayout(self.vbox)
 
-        button1.clicked.connect(self.ask_folder_dialog)
+        button1.clicked.connect(self.load_folder_view)
         button2.clicked.connect(self.ask_tag_dialog)
         button3.clicked.connect(self.close)
+
+    def load_folder_view(self):
+        self.ask_folder_dialog()
+        path = self.selected_folder
+
+        if path:
+            for file in os.listdir(path):
+                self.image_tree.add_image_to_model(file)
+        self.show_tree_view()
 
     def ask_folder_dialog(self):
         self.clear_widgets()
         self.selected_folder = str(QFileDialog.getExistingDirectory(self, "Seleccioni una carpeta"))
-        print(f"Selected folder is {self.selected_folder} !")
         self.init_UI()
     
     def ask_tag_dialog(self):
         if self.new_window is None:
             self.new_window  = DialogWindow(self,"Tag", (200,200,200,200), "Set a tag:")
-
-    def file_list_view(self):
-        pass
     
     def clear_widgets(self):
         """Deletes all widgets from the window"""
@@ -67,19 +76,8 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
             if widget is not None:
                 widget.deleteLater()  # Ensures proper deletion
     
-class DialogWindow(QWidget):  
-    def __init__(self, parent_window, title, geometry, text):
-        super().__init__()
-        self.setWindowTitle(title)
-        self.setGeometry(*geometry)
-        self.label = QLabel(text, self)
-        self.line_edit = QLineEdit(self)     
-        self.line_edit.setPlaceholderText("Etiqueta")  
-        self.button = QPushButton("Ok", self)
-        self.button.setGeometry(10,40,100,40)
-        self.button.clicked.connect(self.submit)
-        self.show()
-
-    def submit(self):
-        text = self.line_edit.text()
-        print(f"Hello {text}")
+    def show_tree_view(self):
+        self.clear_widgets()
+        view = QTableView()
+        self.setCentralWidget(view)
+        view.setModel(self.image_tree)

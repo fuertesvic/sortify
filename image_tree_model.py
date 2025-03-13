@@ -1,5 +1,4 @@
 from PyQt6.QtCore import QAbstractItemModel, QModelIndex, Qt
-from PyQt6.QtWidgets import QApplication, QTableView
 
 class ImageTreeModel(QAbstractItemModel):
     def __init__(self, data = None):
@@ -32,13 +31,13 @@ class ImageTreeModel(QAbstractItemModel):
     def add_tag_to_image(self, index, tags):
         self.images[index]["tags"] = tags
     
-    # Implement the required `index()` method
+    # Required method
     def index(self, row, column, parent=QModelIndex()):
         if self.hasIndex(row, column, parent):
             return self.createIndex(row, column)
         return QModelIndex()  # Return an invalid index if out of bounds
 
-    # Implement the required `parent()` method (not needed for flat tables)
+    # Required method
     def parent(self, index):
         return QModelIndex()  # Always return an invalid parent for a table
 
