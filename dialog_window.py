@@ -1,7 +1,8 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton,QDialog, QApplication
 
-class DialogWindow(QWidget):  
-    def __init__(self, parent_window, title, geometry, text):
+
+class DialogWindow(QDialog):  
+    def __init__(self, title, geometry, text):
         super().__init__()
         self.setWindowTitle(title)
         self.setGeometry(*geometry)
@@ -11,8 +12,15 @@ class DialogWindow(QWidget):
         self.button = QPushButton("Ok", self)
         self.button.setGeometry(10,40,100,40)
         self.button.clicked.connect(self.submit)
-        self.show()
+        
 
     def submit(self):
-        text = self.line_edit.text()
-        print(f"Hello {text}")
+        self.user_input = self.line_edit.text()
+        super().accept()
+        
+    def get_user_input(self):
+        return self.user_input  # Return the stored user input
+
+if __name__ == '__main__':
+    app = QApplication([])
+    mywindow = DialogWindow('Title',(200,200,200,200), "Hello")

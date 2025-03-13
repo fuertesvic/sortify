@@ -30,6 +30,10 @@ The user can define tags and add then to img metadata and then perform actions s
 - [ ] Add keybindings   
 - [ ] Add Image recogtnition to automatically add tags to images.  
  
+ # PYQT BRANCH
+ - [x] Implement a model/view architecture for fast performance, and efficient view management, and not needing to open every image every time.
+ - [ ] Fix the bug so that every time that the model is created it duplicates the images
+ - [ ] Make the actual changes in the image metadata
 
 
 

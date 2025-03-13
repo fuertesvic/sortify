@@ -1,5 +1,5 @@
 import os
-from PyQt6.QtWidgets import (QMainWindow, QLabel,
+from PyQt6.QtWidgets import (QMainWindow, QLabel, 
                             QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
                             QPushButton, QFileDialog, QLineEdit,QTableView)
 from PyQt6.QtGui import QFont, QIcon
@@ -76,8 +76,36 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
             if widget is not None:
                 widget.deleteLater()  # Ensures proper deletion
     
+    def myfunc(self):
+        print(self.selection.currentIndex().row())
+
     def show_tree_view(self):
-        self.clear_widgets()
+       
+        tree_view_widget = QWidget()
+        tree_layout = QVBoxLayout(tree_view_widget)
+        
         view = QTableView()
-        self.setCentralWidget(view)
         view.setModel(self.image_tree)
+        
+        add_tag_btn = QPushButton("Afegir Etiqueta")
+        add_tag_btn.clicked.connect(self.add_tag_to_selected)
+        back_btn = QPushButton("Menu Principal")
+        back_btn.clicked.connect(self.init_UI)
+
+        self.selection = view.selectionModel()
+        
+        tree_layout.addWidget(view)
+        tree_layout.addWidget(add_tag_btn)
+        tree_layout.addWidget(back_btn)
+        self.setCentralWidget(tree_view_widget)
+
+    def add_tag_to_selected(self):
+        tag = None
+        index = self.selection.currentIndex().row()
+        dialog = DialogWindow("Etiqueta", (200,200,400,400), "introdueixi l'etiqueta")
+        result = dialog.exec()
+        if result == 1: tag = dialog.get_user_input() 
+        if tag: self.image_tree.add_tag_to_image(index, tag)
+    
+
+       
