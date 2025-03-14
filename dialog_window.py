@@ -21,6 +21,6 @@ class DialogWindow(QDialog):
     def get_user_input(self):
         return self.user_input  # Return the stored user input
 
-if __name__ == '__main__':
-    app = QApplication([])
-    mywindow = DialogWindow('Title',(200,200,200,200), "Hello")
+# if __name__ == '__main__':
+#     app = QApplication([])
+#     mywindow = DialogWindow('Title',(200,200,200,200), "Hello")

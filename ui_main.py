@@ -1,11 +1,12 @@
 import os
 from PyQt6.QtWidgets import (QMainWindow, QLabel, 
-                            QWidget, QVBoxLayout, QHBoxLayout, QAbstractItemView,
-                            QPushButton, QFileDialog, QLineEdit,QTableView)
+                            QWidget, QVBoxLayout, QAbstractItemView,
+                            QPushButton, QFileDialog,QTableView)
 from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtCore import Qt
 from image_tree_model import ImageTreeModel
 from dialog_window import DialogWindow
+from metadata_manager import write_tag_in_metadata, read_tag_in_metadata
 
 class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
     def __init__(self):
@@ -57,7 +58,8 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         path = self.selected_folder
         if path:
             for file in os.listdir(path):
-                self.image_tree.add_image_to_model(file)
+                tag = read_tag_in_metadata(path +'/' +file)
+                self.image_tree.add_image_to_model(file, tag)
         self.show_tree_view()
 
     def ask_folder_dialog(self):
@@ -114,6 +116,8 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         if tag:             # Ensure there is a tag introduced
             for rowindex in selected_rows:
                 self.image_tree.add_tag_to_image(rowindex,tag)
-    
-
+                # write_tag_in_metadata(self.selected_folder+)
+                path = f"{self.selected_folder}/{self.image_tree.images[rowindex]['name']}"
+                print(path)
+                write_tag_in_metadata(path, tag)
        
