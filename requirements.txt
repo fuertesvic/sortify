@@ -1,2 +1,4 @@
 kaggle
 Pillow
+piexif
+PyQt6
