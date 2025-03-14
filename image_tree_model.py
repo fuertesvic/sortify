@@ -1,3 +1,6 @@
+# This class is used to implement a Model/View Architecture
+# It inherits from QAbstractItemModel, which ensures proper & efficient data handling, loading and visualization
+# In other words, we keep a data structure holding the image: tags data, so we don't have to open every image every time.
 from PyQt6.QtCore import QAbstractItemModel, QModelIndex, Qt
 
 class ImageTreeModel(QAbstractItemModel):
@@ -32,8 +35,17 @@ class ImageTreeModel(QAbstractItemModel):
         self.images.append({"name":image_name, "tags": tags})
         self.endInsertRows()
 
-    def add_tag_to_image(self, index, tags):
-        self.images[index]["tags"] = tags
+    def add_tag_to_image(self, index, tag):
+        
+        tags = self.images[index]["tags"] 
+        if tags:    
+            self.images[index]["tags"] = ",".join([tags, tag])
+        else:
+            self.images[index]["tags"] = tag
+
+    
+    def remove_tags_from_image(self, index):
+        self.images[index]["tags"] = ''
  
     # Required method
     def index(self, row, column, parent=QModelIndex()):

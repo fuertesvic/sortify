@@ -1,3 +1,4 @@
+# Handles the metadata read/write actions
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo,PngImageFile
 import piexif
@@ -12,10 +13,12 @@ def write_tag_in_metadata(file, tag):
         
         # Create a PngInfo object to store metadata
         metadata = PngInfo()
-
-        # Add metadata (you can add any key-value pairs you want)
-        metadata.add_text("keywords",tag)
-
+        tags = []                   
+        tags.extend(read_tag_in_metadata(file).split()) # Reads and formats the existing tags into a list
+        tags.append(tag)
+        # Add metadata (you can add any key-value pairs you want
+        print(",".join(tags))
+        metadata.add_text("keywords",",".join(tags))
         # Save the image with the new metadata
         image.save(file, pnginfo=metadata)
 
@@ -66,9 +69,9 @@ def read_tag_in_metadata(file):
                 # Decode UserComment from bytes to string (UTF-8)
                 return user_comment.decode('utf-8')
             else:
-                return "UserComment field not found."
+                return ""
         else:
-            return "No EXIF data found."
+            return ""
     
     elif 'png' in img_format:
         # Open the PNG image
@@ -82,7 +85,10 @@ def read_tag_in_metadata(file):
         if keywords:
             return keywords
         else:
-            return "No 'keywords' metadata found."
+            return ""
 
-# write_tag_in_metadata('assets/pokemon/1.png','mylittletest')
-# print(read_tag_from_metadata('assets/pokemon/1.png'))
+def remove_tags_from_image(path,tags_to_remove=None):
+    """Creates an empty metadata object file to overwrite the existing one, thus removing the tags from an image."""
+    img = Image.open(path)
+    metadata = PngInfo()
+    img.save(path,'PNG',pnginfo=metadata)

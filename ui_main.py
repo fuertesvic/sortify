@@ -1,3 +1,4 @@
+# Logic regarding the GUI and user interactions
 import os
 from PyQt6.QtWidgets import (QMainWindow, QLabel, 
                             QWidget, QVBoxLayout, QAbstractItemView,
@@ -6,7 +7,7 @@ from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtCore import Qt
 from image_tree_model import ImageTreeModel
 from dialog_window import DialogWindow
-from metadata_manager import write_tag_in_metadata, read_tag_in_metadata
+from metadata_manager import write_tag_in_metadata, read_tag_in_metadata, remove_tags_from_image
 
 class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
     def __init__(self):
@@ -88,6 +89,8 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         
         add_tag_btn = QPushButton("Afegir Etiqueta")
         add_tag_btn.clicked.connect(self.add_tag_to_selected)
+        remove_tag_btn = QPushButton("Esborrar Etiquetes")
+        remove_tag_btn.clicked.connect(self.remove_tags_of_selected)
         back_btn = QPushButton("Menu Principal")
         back_btn.clicked.connect(self.init_UI)
         
@@ -103,6 +106,7 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         # Add UI elements to layout
         tree_layout.addWidget(view)
         tree_layout.addWidget(add_tag_btn)
+        tree_layout.addWidget(remove_tag_btn)
         tree_layout.addWidget(back_btn)
         self.setCentralWidget(tree_view_widget)
 
@@ -114,8 +118,16 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         if result == 1: tag = dialog.get_user_input()   # Ensure the dialog was accepted
         selected_rows =  {index.row() for index in self.selection.selectedIndexes()}
         if tag:             # Ensure there is a tag introduced
-            for rowindex in selected_rows:
-                self.image_tree.add_tag_to_image(rowindex,tag)
-                path = f"{self.selected_folder}/{self.image_tree.images[rowindex]['name']}"
+            for row_index in selected_rows:
+                self.image_tree.add_tag_to_image(row_index,tag)
+                path = f"{self.selected_folder}/{self.image_tree.images[row_index]['name']}"
                 write_tag_in_metadata(path, tag)
+                
+    def remove_tags_of_selected(self):
+        selected_rows =  {index.row() for index in self.selection.selectedIndexes()}
+
+        for row_index in selected_rows:
+            self.image_tree.remove_tags_from_image(row_index)
+            path = f"{self.selected_folder}/{self.image_tree.images[row_index]['name']}"
+            remove_tags_from_image(path)
        

@@ -1,3 +1,4 @@
+# Shrinks the database
 path="dataset/pokemon/"
 for img in `ls -v $path | tail -n +100`
 do
