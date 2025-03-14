@@ -1,6 +1,6 @@
 import os
 from PyQt6.QtWidgets import (QMainWindow, QLabel, 
-                            QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+                            QWidget, QVBoxLayout, QHBoxLayout, QAbstractItemView,
                             QPushButton, QFileDialog, QLineEdit,QTableView)
 from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtCore import Qt
@@ -48,26 +48,22 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         central_widget.setLayout(self.vbox)
 
         button1.clicked.connect(self.load_folder_view)
-        button2.clicked.connect(self.ask_tag_dialog)
+        button2.clicked.connect(self.load_folder_view)
         button3.clicked.connect(self.close)
 
     def load_folder_view(self):
+        """Asks the user to select a directory, then sets the file data into the image_tree, and then calls for the view"""
         self.ask_folder_dialog()
         path = self.selected_folder
-
         if path:
             for file in os.listdir(path):
                 self.image_tree.add_image_to_model(file)
         self.show_tree_view()
 
     def ask_folder_dialog(self):
+        """Clears the screen and opens a directory dialog"""
         self.clear_widgets()
         self.selected_folder = str(QFileDialog.getExistingDirectory(self, "Seleccioni una carpeta"))
-        self.init_UI()
-    
-    def ask_tag_dialog(self):
-        if self.new_window is None:
-            self.new_window  = DialogWindow(self,"Tag", (200,200,200,200), "Set a tag:")
     
     def clear_widgets(self):
         """Deletes all widgets from the window"""
@@ -76,14 +72,15 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
             if widget is not None:
                 widget.deleteLater()  # Ensures proper deletion
     
-    def myfunc(self):
-        print(self.selection.currentIndex().row())
-
     def show_tree_view(self):
-       
+        
+        # TreeView Setup - parent widget
         tree_view_widget = QWidget()
+
+        # Layout for multiple items -> tree view + buttons, child of tree_view_widget
         tree_layout = QVBoxLayout(tree_view_widget)
         
+        # Table
         view = QTableView()
         view.setModel(self.image_tree)
         
@@ -91,21 +88,32 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         add_tag_btn.clicked.connect(self.add_tag_to_selected)
         back_btn = QPushButton("Menu Principal")
         back_btn.clicked.connect(self.init_UI)
+        
+        # Allow to select multiple items
+        view.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
+        # When one cell is selected, select all row
+        view.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+
+        # Allow selection and store it in self.selection
         self.selection = view.selectionModel()
         
+        # Add UI elements to layout
         tree_layout.addWidget(view)
         tree_layout.addWidget(add_tag_btn)
         tree_layout.addWidget(back_btn)
         self.setCentralWidget(tree_view_widget)
 
     def add_tag_to_selected(self):
+        """Asks the user to input a tag and adds it to the currently selected images"""
         tag = None
-        index = self.selection.currentIndex().row()
-        dialog = DialogWindow("Etiqueta", (200,200,400,400), "introdueixi l'etiqueta")
+        dialog = DialogWindow("Etiqueta", (200,200,175,100), "introdueixi l'etiqueta")  # Ask for tag
         result = dialog.exec()
-        if result == 1: tag = dialog.get_user_input() 
-        if tag: self.image_tree.add_tag_to_image(index, tag)
+        if result == 1: tag = dialog.get_user_input()   # Ensure the dialog was accepted
+        selected_rows =  {index.row() for index in self.selection.selectedIndexes()}
+        if tag:             # Ensure there is a tag introduced
+            for rowindex in selected_rows:
+                self.image_tree.add_tag_to_image(rowindex,tag)
     
 
        

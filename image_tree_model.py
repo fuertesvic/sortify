@@ -4,6 +4,7 @@ class ImageTreeModel(QAbstractItemModel):
     def __init__(self, data = None):
         super().__init__()
         self.images = data if data else []
+        self.file_set = set()
 
     def rowCount(self, parent=None):
         return len(self.images) if self.images else 0
@@ -24,6 +25,9 @@ class ImageTreeModel(QAbstractItemModel):
     def add_image_to_model(self, image_name, tags=None):
         if tags is None:
             tags = []
+        if image_name in self.file_set:
+            return
+        self.file_set.add(image_name)
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self.images.append({"name":image_name, "tags": tags})
         self.endInsertRows()
@@ -40,20 +44,3 @@ class ImageTreeModel(QAbstractItemModel):
     # Required method
     def parent(self, index):
         return QModelIndex()  # Always return an invalid parent for a table
-
-# app = QApplication([])
-
-# data = [{"name":"Image1", "tags": "ocean"},    
-#         {"name":"Image 2","tags": "mountain"}]
-
-# model = ImageTreeModel(data)
-# model.add_image_to_model("Image 3","sunset")
-# model.add_image_to_model("Image 4")
-# model.add_tag_to_image(2,"MyTag")
-
-# view = QTableView()
-
-# view.setModel(model)
-# view.show()
-
-# app.exec()
