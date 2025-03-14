@@ -11,8 +11,7 @@ class DialogWindow(QDialog):
         self.line_edit.setPlaceholderText("Etiqueta")  
         self.button = QPushButton("Ok", self)
         self.button.setGeometry(10,40,100,40)
-        self.button.clicked.connect(self.submit)
-        
+        self.button.clicked.connect(self.submit)    
 
     def submit(self):
         self.user_input = self.line_edit.text()
@@ -21,6 +20,3 @@ class DialogWindow(QDialog):
     def get_user_input(self):
         return self.user_input  # Return the stored user input
 
-# if __name__ == '__main__':
-#     app = QApplication([])
-#     mywindow = DialogWindow('Title',(200,200,200,200), "Hello")
