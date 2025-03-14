@@ -33,7 +33,8 @@ class ImageTreeModel(QAbstractItemModel):
         self.endInsertRows()
 
     def add_tag_to_image(self, index, tags):
-        self.images[index]["tags"] = tags 
+        self.images[index]["tags"] = tags
+ 
     # Required method
     def index(self, row, column, parent=QModelIndex()):
         if self.hasIndex(row, column, parent):

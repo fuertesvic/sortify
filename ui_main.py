@@ -116,8 +116,6 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         if tag:             # Ensure there is a tag introduced
             for rowindex in selected_rows:
                 self.image_tree.add_tag_to_image(rowindex,tag)
-                # write_tag_in_metadata(self.selected_folder+)
                 path = f"{self.selected_folder}/{self.image_tree.images[rowindex]['name']}"
-                print(path)
                 write_tag_in_metadata(path, tag)
        
