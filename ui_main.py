@@ -86,7 +86,7 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         # Table
         view = QTableView()
         view.setModel(self.image_tree)
-        print(vars(view))
+        
         add_tag_btn = QPushButton("Afegir Etiqueta")
         add_tag_btn.clicked.connect(self.add_tag_to_selected)
         # select_all_btn = QPushButton("Selecciona tots")
@@ -112,6 +112,7 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         tree_layout.addWidget(remove_tag_btn)
         tree_layout.addWidget(back_btn)
         self.setCentralWidget(tree_view_widget)
+        self.image_tree.search_image_with_tag("a")
 
     def add_tag_to_selected(self):
         """Asks the user to input a tag and adds it to the currently selected images"""

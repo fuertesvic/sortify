@@ -46,7 +46,11 @@ class ImageTreeModel(QAbstractItemModel):
     
     def remove_tags_from_image(self, index):
         self.images[index]["tags"] = ''
- 
+
+    def search_image_with_tag(self, tag):
+        print("Search Image with tag called")
+        print([tag in item['tags']for item in self.images]) 
+
     # Required method
     def index(self, row, column, parent=QModelIndex()):
         if self.hasIndex(row, column, parent):
