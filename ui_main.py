@@ -1,6 +1,6 @@
 # Logic regarding the GUI and user interactions
 import os
-from PyQt6.QtWidgets import (QMainWindow, QLabel, 
+from PyQt6.QtWidgets import (QMainWindow, QLabel,QTreeView,
                             QWidget, QVBoxLayout, QAbstractItemView,
                             QPushButton, QFileDialog,QTableView)
 from PyQt6.QtGui import QFont, QIcon
@@ -86,9 +86,11 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         # Table
         view = QTableView()
         view.setModel(self.image_tree)
-        
+        print(vars(view))
         add_tag_btn = QPushButton("Afegir Etiqueta")
         add_tag_btn.clicked.connect(self.add_tag_to_selected)
+        # select_all_btn = QPushButton("Selecciona tots")
+        # select_all_btn.clicked.connect(self.select_all_items)
         remove_tag_btn = QPushButton("Esborrar Etiquetes")
         remove_tag_btn.clicked.connect(self.remove_tags_of_selected)
         back_btn = QPushButton("Menu Principal")
@@ -106,6 +108,7 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
         # Add UI elements to layout
         tree_layout.addWidget(view)
         tree_layout.addWidget(add_tag_btn)
+        # tree_layout.addWidget(select_all_btn)
         tree_layout.addWidget(remove_tag_btn)
         tree_layout.addWidget(back_btn)
         self.setCentralWidget(tree_view_widget)
@@ -130,4 +133,8 @@ class MainWindow(QMainWindow): # Main window inherits from MainWindow from Qt
             self.image_tree.remove_tags_from_image(row_index)
             path = f"{self.selected_folder}/{self.image_tree.images[row_index]['name']}"
             remove_tags_from_image(path)
-       
+    
+    def search_images_with_tag(self):
+        dialog = DialogWindow("Etiqueta", (200,200,175,100), "introdueixi l'etiqueta")  # Ask for tag
+        tag = dialog.exec()
+        self.show_tree_view(tag)

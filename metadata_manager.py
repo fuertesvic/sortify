@@ -17,7 +17,6 @@ def write_tag_in_metadata(file, tag):
         tags.extend(read_tag_in_metadata(file).split()) # Reads and formats the existing tags into a list
         tags.append(tag)
         # Add metadata (you can add any key-value pairs you want
-        print(",".join(tags))
         metadata.add_text("keywords",",".join(tags))
         # Save the image with the new metadata
         image.save(file, pnginfo=metadata)

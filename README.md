@@ -35,9 +35,10 @@ The user can define tags and add then to img metadata and then perform actions s
  - [x] Fix the bug so that every time that the model is created it duplicates the images
  - [x] Make the actual changes in the image metadata
  - [x] Allow multiple image formats (currently: 'PNG' and 'JPG')
- - [ ] Implement multiple tags per image
+ - [x] Implement multiple tags per image
+ - [ ] Implement image with specific tag search
+ - [ ] Implement Individual tag Deletion
  - [ ] Make a "Select All" Button
- - [ ] Implement Tag Deletion
  i'll switch to main branch again when all of this is working
 
 
